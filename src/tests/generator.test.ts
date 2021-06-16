@@ -125,3 +125,25 @@ it('Schema Prefix', async () => {
   });
   expect(schemasSource).toMatchSnapshot();
 });
+
+it('Series of Identifiers', async () => {
+  const endpoints = `
+    @token GET /conversations/:entryType/:entryId
+      => SuccessResponse
+  `;
+  const models = `
+    SuccessResponse { success: b }
+    EntryType (
+      task |
+      transaction |
+      ticket
+    )
+  `;
+  const { clientSource, typesSource, schemasSource } = await generate({
+    endpoints,
+    models,
+  });
+  expect(clientSource).toMatchSnapshot();
+  expect(typesSource).toMatchSnapshot();
+  expect(schemasSource).toMatchSnapshot();
+});
